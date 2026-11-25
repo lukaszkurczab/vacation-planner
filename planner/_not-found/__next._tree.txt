@@ -1,4 +1,4 @@
 :HL["/vacation-planner/planner/_next/static/chunks/3vsfrnt8ovq5c.css","style"]
-:HL["/vacation-planner/planner/_next/static/chunks/3hvmx27ul7r7_.css","style"]
-:HL["/vacation-planner/planner/_next/static/chunks/030xqdhup_nvp.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"M1WcfOuFRorPHpZG6pIcA"}
+:HL["/vacation-planner/planner/_next/static/chunks/14evo_0_ch_mz.css","style"]
+:HL["/vacation-planner/planner/_next/static/chunks/3oa6p5f5bsg6e.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"kirbLkDptgnkOxl7mClbe"}
