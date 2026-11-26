@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,66967,e=>{"use strict";e.s(["default",0,["bruma-l10n:de",{loading:"Reiseführer wird geladen …"}]])}]);

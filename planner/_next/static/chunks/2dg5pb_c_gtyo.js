@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,20394,e=>{"use strict";e.s(["default",0,["bruma-l10n:de",{label:"Schnell hinzufügen",hint:"z. B. 12 € Kaffee, morgen 19 Uhr Essen"}]])}]);
