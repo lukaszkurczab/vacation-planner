@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,47421,e=>{"use strict";e.s(["default",0,["bruma-l10n:de",{label:"Wohnsitzland",auto:"Laut Gerät: {country}",autoUnknown:"Laut Gerät (unbekannt)",hint:"Feiertage und freie Tage im „Reisejahr“ (Urlaub, Brückentage). An Nager.Date gehen nur Ländercode und Jahr."}]])}]);
