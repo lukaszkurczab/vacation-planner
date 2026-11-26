@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,77450,e=>{"use strict";e.s(["default",0,["bruma-l10n:de",{link:"In der Nähe entdecken",loading:"Vorschläge werden geladen …"}]])}]);

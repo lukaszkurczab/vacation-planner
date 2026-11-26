@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,16621,e=>{"use strict";e.s(["default",0,["bruma-l10n:de",{holiday:"Feiertag: {name}",regional:"Regionaler Feiertag: {name}",hint:"Geschäfte und manche Sehenswürdigkeiten können geschlossen sein."}]])}]);
