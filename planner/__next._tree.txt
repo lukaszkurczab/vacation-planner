@@ -5,4 +5,4 @@
 :HL["/vacation-planner/planner/_next/static/media/SpaceGrotesk-s.p.1svu3mhjowcan.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
 :HL["/vacation-planner/planner/_next/static/chunks/2n8-p_ct5akmy.css","style"]
 :HL["/vacation-planner/planner/_next/static/chunks/2-1png9uds4js.css","style"]
-0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4224,"slots":null}}},"staleTime":300,"buildId":"i8LeHftPzOP60hD4jgglI"}
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4224,"slots":null}}},"staleTime":300,"buildId":"8B5E5VGny08pX03SGi2ya"}

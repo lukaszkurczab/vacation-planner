@@ -1,0 +1,497 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,12268,e=>{"use strict";var a=e.i(99506),i=e.i(32751);function t(e){return"stay"===e.type}function r(e){return i.TRANSPORT_BOOKING_TYPES.includes(e.type)}function n(e){if(!e.end)return[];let i=(0,a.datePart)(e.start),t=(0,a.datePart)(e.end),r=(0,a.diffDays)(i,t),n=[];for(let e=0;e<r;e++)n.push((0,a.addDays)(i,e));return n}function o(e,i){return e.filter(t).filter(e=>e.end&&(0,a.datePart)(e.start)<=i&&i<(0,a.datePart)(e.end)).sort((e,a)=>e.start<a.start?-1:+(e.start>a.start))[0]}function s(e,a,i){let t=e[a];if(t&&void 0!==t.lat&&void 0!==t.lng)return t;if("location"===a&&e.placeId&&i){let a=i.find(a=>a.id===e.placeId);if(a)return{name:t?.name??a.name,lat:a.lat,lng:a.lng}}return t}function l(e,a,i){var t;if(!a)return null;let r="stay"===e.type&&!!e.title.trim()&&e.title.trim()!==a.name&&((t=a.name).includes(",")||t.length>40);return{name:r?e.title.trim():a.name,...r&&a.name?{address:a.name}:{},...void 0!==a.lat?{lat:a.lat}:{},...void 0!==a.lng?{lng:a.lng}:{},bookingId:e.id,...e.placeId?{placeId:e.placeId}:{},source:i}}function u(e,a){let i=e.startTimeZone??a;return{start:i,end:e.endTimeZone??(e.end?a:i)}}function c(e,i,t="UTC"){let r="start"===i?e.start:e.end??e.start,n=u(e,t)[i];return d(r.length>=16?r:`${(0,a.datePart)(r)}T00:00`,n)}function d(e,i){try{let t=(0,a.zonedTimeToInstant)(e,i).getTime();return Number.isFinite(t)?t:null}catch{return null}}function m(e,i,t,n){let o=e=>"start"===t?e.start:e.end??e.start;return e.filter(r).filter(e=>"start"===t?(0,a.datePart)(e.start)===i:e.end?(0,a.datePart)(e.end)===i:(0,a.datePart)(e.start)===i).sort((e,a)=>{let i=c(e,t,n),r=c(a,t,n);return null!==i&&null!==r&&i!==r?i-r:o(e)<o(a)?-1:+(o(e)>o(a))})}e.s(["BOOKING_ICON",0,{stay:"bed",flight:"plane",train:"train",bus:"bus",ferry:"ferry",car:"car",activity:"ticket",restaurant:"utensils",other:"bookings"},"baseLatLng",0,function(e){return e&&void 0!==e.lat&&void 0!==e.lng?{lat:e.lat,lng:e.lng}:null},"bookingInstant",0,c,"bookingZones",0,u,"buildTimeline",0,function(e,i){let r=(0,a.tripDays)(e).map((e,a)=>({kind:"day",date:e,dayIndex:a}));for(let e of i)r.push({kind:"booking",booking:e,date:(0,a.datePart)(e.start),at:e.start,edge:"start"}),t(e)&&e.end&&r.push({kind:"booking",booking:e,date:(0,a.datePart)(e.end),at:e.end,edge:"end"});let n=e=>{if("day"===e.kind)return`${e.date}|0`;let i=(0,a.timePart)(e.at)??"00:00";return`${e.date}|1|${i}|${+("end"!==e.edge)}|${e.booking.title}`};return r.sort((e,a)=>{let i=n(e),t=n(a);return i<t?-1:+(i>t)})},"dayBase",0,function(e,i,t,r){let n=o(i,(0,a.addDays)(t,-1)),u=o(i,t),d=i.filter(e=>"car"!==e.type),A=e.timeZone??"UTC",p=n?l(n,s(n,"location",r),"stay"):null;if(!p){let e=m(d,t,"end",A),i=e.filter(e=>(0,a.datePart)(e.start)!==t),n=i[i.length-1]??e[0];n&&(p=l(n,s(n,"to",r),"arrival"))}!p&&u&&(p=l(u,s(u,"location",r),(0,a.datePart)(u.start)===t?"destination":"stay"));let f=u?l(u,s(u,"location",r),"stay"):null;if(!f){let i=m(d,t,"start",A).filter(e=>p?.source!=="arrival"||p.bookingId!==e.id),n=i[i.length-1];if(n){let i=s(n,"to",r);f=t<e.endDate&&n.end&&(0,a.datePart)(n.end)===t&&(c(n,"end",A)??0)>=(c(n,"start",A)??0)&&i&&void 0!==i.lat&&void 0!==i.lng?l(n,i,"arrival"):l(n,s(n,"from",r),"departure")}}return f||(f=p),u?{start:p,end:f,stay:u}:{start:p,end:f}},"detectConflicts",0,function(e,i){let r=[];for(let e of i)e.end&&e.end<e.start&&!(e.endTimeZone||e.startTimeZone)&&r.push({type:"invalid-range",bookingId:e.id});let o=i.filter(t).filter(e=>e.end&&e.end>e.start);for(let e=0;e<o.length;e++)for(let a=e+1;a<o.length;a++){let i=o[e],t=o[a],s=new Set(n(t)),l=n(i).filter(e=>s.has(e));l.length>0&&r.push({type:"overlapping-stays",bookingIds:[i.id,t.id],nights:l})}let s=new Set(o.flatMap(n));for(let i of(0,a.tripDays)(e).slice(0,-1))s.has(i)||r.push({type:"missing-stay",date:i});return r},"isStay",0,t,"isTransport",0,r,"localInstant",0,d,"nightsOf",0,n,"stayForNight",0,o])},41478,e=>{"use strict";let a=new Set(["AC","CP","DG","EA","EU","EZ","IC","QO","TA","UM","UN","XA","XB","ZZ"]),i=["pl","en","es","pt","it","fr","de","nl","cs","sk","hr","sl","hu","ro","bg","el","tr","sv","da","nb","fi","is","et","lv","lt","uk","ru","sr","ga","mt","ja","zh","ko","th","vi","id","ar","he"],t="ABCDEFGHIJKLMNOPQRSTUVWXYZ";function r(e){return"string"==typeof e&&/^[A-Z]{2}$/.test(e)&&!a.has(e)}let n=new Map;function o(e){let a=n.get(e);if(void 0===a){try{a=new Intl.DisplayNames([e],{type:"region",fallback:"none"})}catch{a=null}n.set(e,a)}return a}function s(e){return e.normalize("NFD").replace(/\p{M}/gu,"").toLocaleLowerCase("en").replace(/&/g," and ").replace(/[.'’()]/g,"").replace(/[\s\-–]+/g," ").trim()}let l=new Map(Object.entries({"czech republic":"CZ","republika czeska":"CZ","ceska republika":"CZ","united states of america":"US",usa:"US",uk:"GB","great britain":"GB",england:"GB",scotland:"GB",wales:"GB",anglia:"GB",szkocja:"GB",holland:"NL",holandia:"NL",turkey:"TR",turcja:"TR"})),u=0,c=null;function d(){if(c)return c;let e=o("en"),i=[];for(let r of t)for(let n of t){let t=r+n;if(!a.has(t))try{e?.of(t)&&Intl.getCanonicalLocales(`und-${t}`)[0]===`und-${t}`&&i.push(t)}catch{}}return c=i,i}function m(e){if(!e)return;let a=s(e);if(!a||a.length<2)return;let t=e.trim();if(!/^[A-Z]{2}$/.test(t))for(;;){let e=l.get(a);if(e)return e;if(u>=i.length)return;!function(e){let a=o(e);if(a)for(let e of d()){let i;try{i=a.of(e)}catch{i=void 0}if(!i||i===e)continue;let t=s(i);t&&!l.has(t)&&l.set(t,e)}}(i[u]),u+=1}}e.s(["countryCodeFromAddress",0,function(e){let a=(e??"").split(/[,，、]/).map(e=>e.trim()).filter(Boolean);if(!(a.length<2))return m(a[a.length-1])},"countryCodeFromName",0,m,"countryCodes",0,function(){return d()},"countryFromLanguages",0,function(e){let a=(e??[]).map(e=>String(e).trim()).filter(Boolean);for(let e of a)try{let a=new Intl.Locale(e).region?.toUpperCase();if(a&&r(a))return a}catch{}for(let e of a)try{let a=new Intl.Locale(e).maximize().region?.toUpperCase();if(a&&r(a))return a}catch{}},"countryName",0,function(e,a){try{return o(a)?.of(e)??e}catch{return e}},"flagEmoji",0,function(e){let a=e.trim().toUpperCase();return/^[A-Z]{2}$/.test(a)?String.fromCodePoint(...[...a].map(e=>127462+e.charCodeAt(0)-65)):""},"isCountryCode",0,r])},93440,e=>{"use strict";var a=e.i(99506);let i=`
+AD Europe/Andorra
+AE Asia/Dubai
+AF Asia/Kabul
+AG America/Antigua
+AI America/Anguilla
+AL Europe/Tirane
+AM Asia/Yerevan
+AO Africa/Luanda
+AQ Antarctica/McMurdo@-77.8,166.6 Antarctica/Casey@-66.3,110.5 Antarctica/Davis@-68.6,78 Antarctica/DumontDUrville@-66.7,140 Antarctica/Mawson@-67.6,62.9 Antarctica/Palmer@-64.8,-64.1 Antarctica/Rothera@-67.6,-68.1 Antarctica/Syowa@-69,39.6 Antarctica/Troll@-72,2.5 Antarctica/Vostok@-78.4,106.9
+AR America/Argentina/Buenos_Aires@-34.6,-58.4 America/Argentina/Cordoba@-31.4,-64.2 America/Argentina/Salta@-24.8,-65.4 America/Argentina/Jujuy@-24.2,-65.3 America/Argentina/Tucuman@-26.8,-65.2 America/Argentina/Catamarca@-28.5,-65.8 America/Argentina/La_Rioja@-29.4,-66.8 America/Argentina/San_Juan@-31.5,-68.5 America/Argentina/Mendoza@-32.9,-68.8 America/Argentina/San_Luis@-33.3,-66.3 America/Argentina/Rio_Gallegos@-51.6,-69.2 America/Argentina/Ushuaia@-54.8,-68.3
+AS Pacific/Pago_Pago
+AT Europe/Vienna
+AU Australia/Lord_Howe@-31.5,159.1 Antarctica/Macquarie@-54.5,159 Australia/Hobart@-42.9,147.3 Australia/Melbourne@-37.8,145 Australia/Sydney@-33.9,151.2 Australia/Broken_Hill@-31.9,141.5 Australia/Brisbane@-27.5,153 Australia/Lindeman@-20.3,149 Australia/Adelaide@-34.9,138.6 Australia/Darwin@-12.5,130.8 Australia/Perth@-31.9,115.9 Australia/Eucla@-31.7,128.9
+AW America/Aruba
+AX Europe/Mariehamn
+AZ Asia/Baku
+BA Europe/Sarajevo
+BB America/Barbados
+BD Asia/Dhaka
+BE Europe/Brussels
+BF Africa/Ouagadougou
+BG Europe/Sofia
+BH Asia/Bahrain
+BI Africa/Bujumbura
+BJ Africa/Porto-Novo
+BL America/St_Barthelemy
+BM Atlantic/Bermuda
+BN Asia/Brunei
+BO America/La_Paz
+BQ America/Kralendijk
+BR America/Noronha@-3.8,-32.4 America/Belem@-1.4,-48.5 America/Fortaleza@-3.7,-38.5 America/Recife@-8,-34.9 America/Araguaina@-7.2,-48.2 America/Maceio@-9.7,-35.7 America/Bahia@-13,-38.5 America/Sao_Paulo@-23.5,-46.6 America/Campo_Grande@-20.4,-54.6 America/Cuiaba@-15.6,-56.1 America/Santarem@-2.4,-54.9 America/Porto_Velho@-8.8,-63.9 America/Boa_Vista@2.8,-60.7 America/Manaus@-3.1,-60 America/Eirunepe@-6.7,-69.9 America/Rio_Branco@-10,-67.8
+BS America/Nassau
+BT Asia/Thimphu
+BW Africa/Gaborone
+BY Europe/Minsk
+BZ America/Belize
+CA America/St_Johns@47.6,-52.7 America/Halifax@44.7,-63.6 America/Glace_Bay@46.2,-59.9 America/Moncton@46.1,-64.8 America/Goose_Bay@53.3,-60.4 America/Blanc-Sablon@51.4,-57.1 America/Toronto@43.7,-79.4 America/Iqaluit@63.7,-68.5 America/Atikokan@48.8,-91.6 America/Winnipeg@49.9,-97.1 America/Resolute@74.7,-94.8 America/Rankin_Inlet@62.8,-92.1 America/Regina@50.4,-104.6 America/Swift_Current@50.3,-107.8 America/Edmonton@53.6,-113.5 America/Cambridge_Bay@69.1,-105.1 America/Inuvik@68.3,-133.7 America/Vancouver@49.3,-123.1 America/Creston@49.1,-116.5 America/Dawson_Creek@55.8,-120.2 America/Fort_Nelson@58.8,-122.7 America/Whitehorse@60.7,-135 America/Dawson@64.1,-139.4
+CC Indian/Cocos
+CD Africa/Kinshasa@-4.3,15.3 Africa/Lubumbashi@-11.7,27.5
+CF Africa/Bangui
+CG Africa/Brazzaville
+CH Europe/Zurich
+CI Africa/Abidjan
+CK Pacific/Rarotonga
+CL America/Santiago@-33.4,-70.7 America/Coyhaique@-45.6,-72.1 America/Punta_Arenas@-53.1,-70.9 Pacific/Easter@-27.1,-109.4
+CM Africa/Douala
+CN Asia/Shanghai@31.2,121.5 Asia/Urumqi@43.8,87.6
+CO America/Bogota
+CR America/Costa_Rica
+CU America/Havana
+CV Atlantic/Cape_Verde
+CW America/Curacao
+CX Indian/Christmas
+CY Asia/Nicosia@35.2,33.4 Asia/Famagusta@35.1,34
+CZ Europe/Prague
+DE Europe/Berlin@52.5,13.4 Europe/Busingen@47.7,8.7
+DJ Africa/Djibouti
+DK Europe/Copenhagen
+DM America/Dominica
+DO America/Santo_Domingo
+DZ Africa/Algiers
+EC America/Guayaquil@-2.2,-79.8 Pacific/Galapagos@-0.9,-89.6
+EE Europe/Tallinn
+EG Africa/Cairo
+EH Africa/El_Aaiun
+ER Africa/Asmara
+ES Europe/Madrid@40.4,-3.7 Africa/Ceuta@35.9,-5.3 Atlantic/Canary@28.1,-15.4
+ET Africa/Addis_Ababa
+FI Europe/Helsinki
+FJ Pacific/Fiji
+FK Atlantic/Stanley
+FM Pacific/Chuuk@7.4,151.8 Pacific/Pohnpei@7,158.2 Pacific/Kosrae@5.3,163
+FO Atlantic/Faroe
+FR Europe/Paris
+GA Africa/Libreville
+GB Europe/London
+GD America/Grenada
+GE Asia/Tbilisi
+GF America/Cayenne
+GG Europe/Guernsey
+GH Africa/Accra
+GI Europe/Gibraltar
+GL America/Nuuk@64.2,-51.7 America/Danmarkshavn@76.8,-18.7 America/Scoresbysund@70.5,-22 America/Thule@76.6,-68.8
+GM Africa/Banjul
+GN Africa/Conakry
+GP America/Guadeloupe
+GQ Africa/Malabo
+GR Europe/Athens
+GS Atlantic/South_Georgia
+GT America/Guatemala
+GU Pacific/Guam
+GW Africa/Bissau
+GY America/Guyana
+HK Asia/Hong_Kong
+HN America/Tegucigalpa
+HR Europe/Zagreb
+HT America/Port-au-Prince
+HU Europe/Budapest
+ID Asia/Jakarta@-6.2,106.8 Asia/Pontianak@0,109.3 Asia/Makassar@-5.1,119.4 Asia/Jayapura@-2.5,140.7
+IE Europe/Dublin
+IL Asia/Jerusalem
+IM Europe/Isle_of_Man
+IN Asia/Kolkata
+IO Indian/Chagos
+IQ Asia/Baghdad
+IR Asia/Tehran
+IS Atlantic/Reykjavik
+IT Europe/Rome
+JE Europe/Jersey
+JM America/Jamaica
+JO Asia/Amman
+JP Asia/Tokyo
+KE Africa/Nairobi
+KG Asia/Bishkek
+KH Asia/Phnom_Penh
+KI Pacific/Tarawa@1.4,173 Pacific/Kanton@-2.8,-171.7 Pacific/Kiritimati@1.9,-157.3
+KM Indian/Comoro
+KN America/St_Kitts
+KP Asia/Pyongyang
+KR Asia/Seoul
+KW Asia/Kuwait
+KY America/Cayman
+KZ Asia/Almaty@43.3,77 Asia/Qyzylorda@44.8,65.5 Asia/Qostanay@53.2,63.6 Asia/Aqtobe@50.3,57.2 Asia/Aqtau@44.5,50.3 Asia/Atyrau@47.1,51.9 Asia/Oral@51.2,51.4
+LA Asia/Vientiane
+LB Asia/Beirut
+LC America/St_Lucia
+LI Europe/Vaduz
+LK Asia/Colombo
+LR Africa/Monrovia
+LS Africa/Maseru
+LT Europe/Vilnius
+LU Europe/Luxembourg
+LV Europe/Riga
+LY Africa/Tripoli
+MA Africa/Casablanca
+MC Europe/Monaco
+MD Europe/Chisinau
+ME Europe/Podgorica
+MF America/Marigot
+MG Indian/Antananarivo
+MH Pacific/Majuro@7.2,171.2 Pacific/Kwajalein@9.1,167.3
+MK Europe/Skopje
+ML Africa/Bamako
+MM Asia/Yangon
+MN Asia/Ulaanbaatar@47.9,106.9 Asia/Hovd@48,91.7
+MO Asia/Macau
+MP Pacific/Saipan
+MQ America/Martinique
+MR Africa/Nouakchott
+MS America/Montserrat
+MT Europe/Malta
+MU Indian/Mauritius
+MV Indian/Maldives
+MW Africa/Blantyre
+MX America/Mexico_City@19.4,-99.1 America/Cancun@21.1,-86.8 America/Merida@21,-89.6 America/Monterrey@25.7,-100.3 America/Matamoros@25.8,-97.5 America/Chihuahua@28.6,-106.1 America/Ciudad_Juarez@31.7,-106.5 America/Ojinaga@29.6,-104.4 America/Mazatlan@23.2,-106.4 America/Bahia_Banderas@20.8,-105.2 America/Hermosillo@29.1,-111 America/Tijuana@32.5,-117
+MY Asia/Kuala_Lumpur@3.2,101.7 Asia/Kuching@1.6,110.3
+MZ Africa/Maputo
+NA Africa/Windhoek
+NC Pacific/Noumea
+NE Africa/Niamey
+NF Pacific/Norfolk
+NG Africa/Lagos
+NI America/Managua
+NL Europe/Amsterdam
+NO Europe/Oslo
+NP Asia/Kathmandu
+NR Pacific/Nauru
+NU Pacific/Niue
+NZ Pacific/Auckland@-36.9,174.8 Pacific/Chatham@-43.9,-176.5
+OM Asia/Muscat
+PA America/Panama
+PE America/Lima
+PF Pacific/Tahiti@-17.5,-149.6 Pacific/Marquesas@-9,-139.5 Pacific/Gambier@-23.1,-134.9
+PG Pacific/Port_Moresby@-9.5,147.2 Pacific/Bougainville@-6.2,155.6
+PH Asia/Manila
+PK Asia/Karachi
+PL Europe/Warsaw
+PM America/Miquelon
+PN Pacific/Pitcairn
+PR America/Puerto_Rico
+PS Asia/Gaza@31.5,34.5 Asia/Hebron@31.5,35.1
+PT Europe/Lisbon@38.7,-9.1 Atlantic/Madeira@32.6,-16.9 Atlantic/Azores@37.7,-25.7
+PW Pacific/Palau
+PY America/Asuncion
+QA Asia/Qatar
+RE Indian/Reunion
+RO Europe/Bucharest
+RS Europe/Belgrade
+RU Europe/Kaliningrad@54.7,20.5 Europe/Moscow@55.8,37.6 Europe/Kirov@58.6,49.7 Europe/Volgograd@48.7,44.4 Europe/Astrakhan@46.4,48.1 Europe/Saratov@51.6,46 Europe/Ulyanovsk@54.3,48.4 Europe/Samara@53.2,50.2 Asia/Yekaterinburg@56.9,60.6 Asia/Omsk@55,73.4 Asia/Novosibirsk@55,82.9 Asia/Barnaul@53.4,83.8 Asia/Tomsk@56.5,85 Asia/Novokuznetsk@53.8,87.1 Asia/Krasnoyarsk@56,92.8 Asia/Irkutsk@52.3,104.3 Asia/Chita@52.1,113.5 Asia/Yakutsk@62,129.7 Asia/Khandyga@62.7,135.6 Asia/Vladivostok@43.2,131.9 Asia/Ust-Nera@64.6,143.2 Asia/Magadan@59.6,150.8 Asia/Sakhalin@47,142.7 Asia/Srednekolymsk@67.5,153.7 Asia/Kamchatka@53,158.7 Asia/Anadyr@64.8,177.5
+RW Africa/Kigali
+SA Asia/Riyadh
+SB Pacific/Guadalcanal
+SC Indian/Mahe
+SD Africa/Khartoum
+SE Europe/Stockholm
+SG Asia/Singapore
+SH Atlantic/St_Helena
+SI Europe/Ljubljana
+SJ Arctic/Longyearbyen
+SK Europe/Bratislava
+SL Africa/Freetown
+SM Europe/San_Marino
+SN Africa/Dakar
+SO Africa/Mogadishu
+SR America/Paramaribo
+SS Africa/Juba
+ST Africa/Sao_Tome
+SV America/El_Salvador
+SX America/Lower_Princes
+SY Asia/Damascus
+SZ Africa/Mbabane
+TC America/Grand_Turk
+TD Africa/Ndjamena
+TF Indian/Kerguelen
+TG Africa/Lome
+TH Asia/Bangkok
+TJ Asia/Dushanbe
+TK Pacific/Fakaofo
+TL Asia/Dili
+TM Asia/Ashgabat
+TN Africa/Tunis
+TO Pacific/Tongatapu
+TR Europe/Istanbul
+TT America/Port_of_Spain
+TV Pacific/Funafuti
+TW Asia/Taipei
+TZ Africa/Dar_es_Salaam
+UA Europe/Simferopol@45,34.1 Europe/Kyiv@50.4,30.5
+UG Africa/Kampala
+UM Pacific/Midway@28.2,-177.4 Pacific/Wake@19.3,166.6
+US America/New_York@40.7,-74 America/Detroit@42.3,-83 America/Chicago@41.9,-87.6 America/Denver@39.7,-105 America/Phoenix@33.4,-112.1 America/Los_Angeles@34.1,-118.2 America/Anchorage@61.2,-149.9 America/Adak@51.9,-176.7 Pacific/Honolulu@21.3,-157.9
+UY America/Montevideo
+UZ Asia/Samarkand@39.7,66.8 Asia/Tashkent@41.3,69.3
+VA Europe/Vatican
+VC America/St_Vincent
+VE America/Caracas
+VG America/Tortola
+VI America/St_Thomas
+VN Asia/Ho_Chi_Minh
+VU Pacific/Efate
+WF Pacific/Wallis
+WS Pacific/Apia
+YE Asia/Aden
+YT Indian/Mayotte
+ZA Africa/Johannesburg
+ZM Africa/Lusaka
+ZW Africa/Harare
+`,t=null;function r(){if(t)return t;for(let e of(t=new Map,i.split("\n"))){let[a,...i]=e.trim().split(" ");a&&0!==i.length&&t.set(a,i.map(e=>{let[a="",i]=e.split("@");if(!i)return{zone:a};let[t,r]=i.split(",").map(Number);return{zone:a,lat:t,lng:r}}))}return t}let n=null;e.s(["countryOfTimeZone",0,function(e){if(e){if(!n)for(let[e,a]of(n=new Map,r()))for(let{zone:i}of a)n.set(i,n.has(i)&&n.get(i)!==e?null:e);return n.get(e)??void 0}},"countryTimeZones",0,function(e){return(r().get(e.toUpperCase())??[]).map(e=>e.zone)},"suggestTimeZone",0,function(e,i){if(!i)return null;let t=(r().get(i.toUpperCase())??[]).filter(e=>(0,a.isValidTimeZone)(e.zone));if(t.length<=1)return t[0]?.zone??null;let n=Math.cos(e.lat*Math.PI/180),o=null,s=1/0;for(let a of t){if(void 0===a.lat||void 0===a.lng)continue;let i=Math.abs(e.lng-a.lng);i>180&&(i=360-i);let t=Math.hypot(i*n,(e.lat-a.lat)*.5);t<s&&(s=t,o=a)}return o?.zone??t[0]?.zone??null}])},41758,e=>{"use strict";var a=e.i(12268),i=e.i(99506),t=e.i(32751);let r=(e,a)=>`booking:${e}:${a}`,n={activity:120,restaurant:90,other:60};function o(e,a){let t=(0,i.timePart)(e)??a;return t&&(0,i.isValidHHMM)(t)?(0,i.parseHHMM)(t):null}function s(e){return e&&void 0!==e.lat&&void 0!==e.lng?{lat:e.lat,lng:e.lng}:null}function l(e,a){let i=s(e.location);if(i)return{point:i,...e.location?.name?{name:e.location.name}:{}};let t=e.placeId?a.find(a=>a.id===e.placeId):void 0;return t?{point:{lat:t.lat,lng:t.lng},name:e.location?.name??t.name}:{point:null,...e.location?.name?{name:e.location.name}:{}}}let u=e=>(e??"").trim().toLowerCase();e.s(["dayEventsFor",0,function(e,c,d=[],m=[],A="UTC"){let p=m.filter(e=>e.date===c),f=new Set(p.filter(e=>"place"!==e.kind).map(e=>u(e.title)).filter(Boolean)),g=new Set(p.map(e=>e.placeId).filter(e=>!!e)),h=[];for(let a of e){if("stay"!==a.type&&f.has(u(a.title)))continue;let e=(0,i.datePart)(a.start),m=a.end?(0,i.datePart)(a.end):e,A={booking:a};if("stay"===a.type){let i=l(a,d),t={point:i.point,blocking:!1,moves:!1,...i.name?{placeName:i.name}:{}};if(e===c){let e=o(a.start,"15:00");null!==e&&h.push({...A,...t,id:r(a.id,"checkin"),kind:"checkin",start:e,end:e})}if(a.end&&m===c&&m!==e){let e=o(a.end,"11:00");null!==e&&h.push({...A,...t,id:r(a.id,"checkout"),kind:"checkout",start:e,end:e})}continue}if(a.placeId&&g.has(a.placeId))continue;let p={...a.from?.name?{fromName:a.from.name}:{},...a.to?.name?{toName:a.to.name}:{}};if("car"===a.type){let i=s(a.from)??s(a.location),t=s(a.to)??s(a.location)??i;if(e===c){let e=o(a.start,null);null!==e&&h.push({...A,...p,id:r(a.id,"pickup"),kind:"pickup",start:e,end:e,point:i,blocking:!0,moves:!1,...a.from?.name??a.location?.name?{placeName:a.from?.name??a.location?.name}:{}})}if(a.end&&m===c){let e=o(a.end,null);null!==e&&h.push({...A,...p,id:r(a.id,"dropoff"),kind:"dropoff",start:e,end:e,point:t,blocking:!0,moves:!1,...a.to?.name??a.location?.name?{placeName:a.to?.name??a.location?.name}:{}})}continue}if(t.TRANSPORT_BOOKING_TYPES.includes(a.type)){let i=s(a.from),t=s(a.to),n=o(a.start,null),l=a.end?o(a.end,null):null,u=e=>({...A,...p,id:r(a.id,"departure"),kind:"departure",start:e,end:e,point:i,after:null,blocking:!0,moves:!0}),d=e=>({...A,...p,id:r(a.id,"arrival"),kind:"arrival",start:e,end:e,point:null,after:t,blocking:!0,moves:!0});if(e===c&&m===c){if(null===n)continue;null===l||l>=n?h.push({...A,...p,id:r(a.id,"transport"),kind:"transport",start:n,end:l??n,point:i,after:a.end?t:i,blocking:!0,moves:!!a.end}):h.push(u(n),d(l))}else e===c?null!==n&&h.push(u(n)):m===c&&null!==l&&h.push(d(l));continue}if(e!==c)continue;let E=o(a.start,null);if(null===E)continue;let k=a.end&&m===c?o(a.end,null):null,M=l(a,d),y=null!==k&&k>E?k:E+(n[a.type]??60);h.push({...A,id:r(a.id,"booking"),kind:"booking",start:E,end:y,point:M.point,blocking:!0,moves:!1,...M.name?{placeName:M.name}:{}})}let E={arrival:0,checkout:1,dropoff:2,transport:3,departure:3,pickup:4,booking:5,checkin:6},k=new Map(h.map(e=>{let t,r,n;return[e,(t="arrival"===e.kind||"checkout"===e.kind||"dropoff"===e.kind,r=(0,a.bookingZones)(e.booking,A),n=`${c}T${(0,i.formatHHMM)(e.start)}`,(0,a.localInstant)(n,t?r.end:r.start)??(0,a.localInstant)(n,"UTC")??0)]}));return h.sort((e,a)=>k.get(e)-k.get(a)||e.start-a.start||E[e.kind]-E[a.kind]||(e.id<a.id?-1:+(e.id>a.id)))},"isEventId",0,e=>e.startsWith("booking:")])},44926,e=>{"use strict";var a=e.i(12268),i=e.i(99506),t=e.i(41758),r=e.i(25395),n=e.i(26944),o=e.i(14961),s=e.i(90170);function l(e){return`var(--day-${(e%8+8)%8+1})`}let u=new Set(["nature","hike","beach","viewpoint"]);function c({item:e,place:a}){return"place"===e.kind&&a?{lat:a.lat,lng:a.lng}:null}function d(e){return e.startTime&&(0,i.isValidHHMM)(e.startTime)?(0,i.parseHHMM)(e.startTime):null}function m(e,a,i){return!!e&&!!a&&(0,r.haversineKm)(e,a)>15&&i.some(e=>"checkin"===e.kind)&&!i.some(e=>e.blocking&&e.moves)}function A(e,a,i){return{key:(0,s.legKey)(e,a,i),fromId:e.id,toId:a.id,from:{lat:e.lat,lng:e.lng},to:{lat:a.lat,lng:a.lng},mode:i}}function p(e,t,s,u={}){let f,g,h=(0,a.baseLatLng)(t.start),E=(0,a.baseLatLng)(t.end),k=h?{id:(f=e.date,`base-start:${f}`),...h}:null,M=E?{id:(g=e.date,`base-end:${g}`),...E}:null,y=u.defaultMode??"car",b=u.events??[],S=t.start?.source==="arrival"?t.start.bookingId:void 0,C=t.end?.source==="departure"?t.end.bookingId:void 0,B=e=>!!e&&b.some(a=>a.booking.id===e&&"departure"===a.kind)&&b.some(a=>a.booking.id===e&&"arrival"===a.kind),v=b.filter(e=>!("departure"===e.kind&&e.booking.id===S&&B(S)||"arrival"===e.kind&&e.booking.id===C&&S!==C&&B(C))).map(({...e})=>{let a=t.start?.source==="arrival"&&t.start.bookingId===e.booking.id&&("transport"===e.kind||"arrival"===e.kind),i=!a&&t.end?.source==="departure"&&t.end.bookingId===e.booking.id&&("transport"===e.kind||"departure"===e.kind);return a?{...e,boundary:"start"}:i?{...e,boundary:"end"}:e}),L=s.start&&(0,i.isValidHHMM)(s.start)?(0,i.parseHHMM)(s.start):(0,i.parseHHMM)(o.DEFAULT_DAY_START),P=v.length?function(e,a,i,t,o,s=null){let l=a.filter(e=>"start"===e.boundary),u=a.filter(e=>"end"===e.boundary),A=u[0],p=A?a.filter(e=>!e.boundary&&!e.blocking&&e.start>A.start):[],f=a.filter(e=>!e.boundary&&!p.includes(e)),g=m(i,s,f),h=e.length,E=[],k=0,M=Math.max(t,...l.map(e=>e.end)),y=l.length?l[l.length-1]?.after??i:i,b=(a,i,t,o)=>{let s=[],l=[];for(let u=a;u<o;u++){let a=e[u],o=c(a),m=i+(o&&t?(0,r.estimateTravelMinutesExact)(t,o,a.item.travelMode):0),A=d(a.item),p=null!==A?Math.max(m,A):m;i=p+(0,n.visitMinutesFor)(a.item,a.place),o&&(t=o),l.push(p),s.push(i)}return{clock:i,prev:t,ends:s,starts:l}},S=()=>E.length?E[E.length-1]:0;for(let a of f){let t=b(k,M,y,h),n=h,l=t.ends.findIndex(e=>e>a.start);if(l>=0&&(n=k+l),!a.blocking){if(g&&("checkout"===a.kind||"checkin"===a.kind)){let n=e.map(e=>{let t=d(e.item),n=c(e);return n?(0,r.haversineKm)(n,s)<(0,r.haversineKm)(n,i)?1:-1:null!==t?t<a.start?-1:1:0}),o=t.starts.findIndex(e=>e>=a.start),l=o>=0?k+o:h,u=l,m=1/0;for(let e=k;e<=h;e++){let a=0;for(let i=k;i<h;i++)(i<e&&1===n[i]||i>=e&&-1===n[i])&&(a+=1);let i=10*a+Math.abs(e-l);i<m&&(m=i,u=e)}E.push(Math.max(u,S()));continue}if("checkout"===a.kind){E.push(Math.max(n,S()));continue}let o=t.starts.findIndex(e=>e>=a.start);E.push(Math.max(o>=0?k+o:h,S()));continue}let u=a.moves&&!!a.point&&!!a.after&&(0,r.haversineKm)(a.point,a.after)>15,m=e.map(e=>{let i=d(e.item);if(null!==i)return i<a.start?-1:1;let t=c(e);return u&&t?(0,r.haversineKm)(t,a.after)<(0,r.haversineKm)(t,a.point)?1:-1:a.moves&&null===a.after?-1:0}),A=n,p=1/0;for(let e=k;e<=h;e++){let a=0;for(let i=k;i<h;i++)(i<e&&1===m[i]||i>=e&&-1===m[i])&&(a+=1);let i=10*a+Math.abs(e-n);i<p&&(p=i,A=e)}for(let e=E.length-1;e>=0&&!f[e].blocking&&E[e]>A;e--)E[e]=A;E.push(A);let C=b(k,M,y,A);k=A;let B=C.prev&&a.point?(0,r.estimateTravelMinutesExact)(C.prev,a.point,o):0;M=Math.max(C.clock+B,a.end),y=void 0===a.after?a.point??C.prev:a.after}let C=l.map(e=>({kind:"event",event:e,id:e.id})),B=0;for(e.forEach((e,a)=>{for(;B<f.length&&E[B]<=a;){let e=f[B];C.push({kind:"event",event:e,id:e.id}),B+=1}C.push({kind:"item",resolved:e,id:e.item.id})});B<f.length;B++){let e=f[B];C.push({kind:"event",event:e,id:e.id})}for(let e of u)C.push({kind:"event",event:e,id:e.id});for(let e of p)C.push({kind:"event",event:e,id:e.id});return C}(e.items,v,h,L,y,E):e.items.map(e=>({kind:"item",resolved:e,id:e.item.id})),T=m(h,E,v.filter(e=>!e.boundary))?v.find(e=>"checkin"===e.kind):void 0,N=e.items.filter(e=>c(e)),I=t.end?.source==="departure"||t.end?.source==="arrival",R=s.returnMode??(I?y:N[N.length-1]?.item.travelMode??y),K=[],D=k,G=0,w="foot"===y||"bike"===y?"transit":y;for(let e of P){if("item"===e.kind){let a=c(e.resolved);if(!a)continue;let i={id:e.id,...a};if(G+=1,D){let t=e.resolved.item.travelMode,n=D.station&&("foot"===t||"bike"===t)&&(0,r.haversineKm)(D,a)>15;K.push(A(D,i,n?w:t))}D=i;continue}let a=e.event;if(T&&a.id===T.id&&E){let e={id:a.id,...a.point??E};D&&K.push(A(D,e,"car"===y?"car":"none")),D={id:`${a.id}:after`,...a.point??E},G+=1;continue}if("end"!==a.boundary&&a.blocking){if("start"===a.boundary){!D&&a.after&&(D={id:a.id,...a.after,station:!0});continue}if(a.point){let e={id:a.id,...a.point};G+=1,D&&K.push(A(D,e,y)),D=e}void 0!==a.after&&(D=a.after?{id:`${a.id}:after`,...a.after,station:a.moves}:null,a.after&&(G+=1))}}M&&D&&G>0&&K.push(A(D,M,R));let H=new Map,O=null;for(let e of K)M&&e.toId===M.id?O=e:H.set(e.toId,e);let _=new Map;N.forEach((e,a)=>_.set(e.item.id,a+1));let z=new Set;e.items.forEach((a,i)=>{let t=e.items[i-1];t?.item.kind==="transport"&&c(a)&&z.add(a.item.id)});let F=!!k&&!!M&&(t.start?.bookingId!==void 0&&t.start.bookingId===t.end?.bookingId||1e-4>Math.abs(k.lat-M.lat)&&1e-4>Math.abs(k.lng-M.lng));return{date:e.date,index:e.index,color:l(e.index),items:e.items,events:P.flatMap(e=>"event"===e.kind?[e.event]:[]),entries:P,defaultMode:y,base:t,meta:s,start:k,end:M,sameBase:F,legs:K,arriving:H,returnLeg:O,numbers:_,covered:z,...T?{relocation:T.id}:{}}}let f=new Set(["transport","departure","arrival","booking"]);function g(e,a,t={}){let r=e.legs.map(i=>{let t=a(i);return e.covered.has(i.toId)?{...t,minutes:0,km:0,covered:!0}:t}),l=new Map(r.map(e=>[e.spec,e])),c=new Map;for(let[a,i]of e.arriving){let e=l.get(i);e&&c.set(a,e)}let m=e.returnLeg?l.get(e.returnLeg)??null:null,A=e.meta.start&&(0,i.isValidHHMM)(e.meta.start)?e.meta.start:function(e,a){let t,r=o.DEFAULT_DAY_START,n=(e.entries??e.items.map(e=>({kind:"item",resolved:e,id:e.item.id}))).find(e=>"item"===e.kind||e.event.blocking);if(!n)return r;if("event"===n.kind){if("start"===n.event.boundary)return(0,i.formatHHMM)(n.event.end);t=n.event.start}else t=d(n.resolved.item);if(null===t)return r;let s=t-(a.get(n.id)?.minutes??0);return s<(0,i.parseHHMM)(r)?(0,i.formatHHMM)(Math.max(0,s)):r}(e,c),p=e.entries.filter(a=>"item"===a.kind||a.event.blocking||a.id===e.relocation),h=p.map(e=>{var a;let t;return"item"===e.kind?{durationMinutes:(0,n.visitMinutesFor)(e.resolved.item,e.resolved.place),...e.resolved.item.startTime?{startTime:e.resolved.item.startTime}:{}}:(t="start"===(a=e.event).boundary?a.end:a.start,{durationMinutes:0,startTime:(0,i.formatHHMM)(t),fixedEnd:a.end,event:!0})}),E=p.map(e=>"event"===e.kind&&"end"===e.event.boundary?m?.minutes??0:c.get(e.id)?.minutes??0),k=(0,n.computeSchedule)(h,E,{dayStart:A,sunset:t.sunsetMinutes??null}),M=new Map,y=new Map;p.forEach((e,a)=>{let i=k.items[a];i&&("item"===e.kind?M.set(e.id,i):y.set(e.id,i))});let b=e.events.find(e=>"end"===e.boundary),S=(0,i.parseHHMM)(A);p.forEach((e,a)=>{("event"!==e.kind||"end"!==e.event.boundary)&&(S=k.items[a]?.end??S)});let C={items:e.items.map(e=>M.get(e.item.id)).filter(e=>!!e),visitMinutes:k.visitMinutes,travelMinutes:k.travelMinutes,waitMinutes:k.waitMinutes,eventMinutes:k.eventMinutes??0,end:S},B=new Map,v=(e,a)=>B.set(e,[...B.get(e)??[],a]),L=e.events.filter(e=>e.blocking&&f.has(e.kind)&&"start"!==e.boundary);for(let a of(e.items.forEach(({item:e,place:a})=>{let i=M.get(e.id);if(!i)return;i.late&&v(e.id,{type:"late",minutes:Math.max(1,i.lateMinutes)}),i.afterSunset&&a&&u.has(a.category)&&v(e.id,{type:"afterSunset"}),i.pastMidnight&&v(e.id,{type:"pastMidnight"});let t=L.find(e=>"departure"===e.kind||"end"===e.boundary?i.end>e.start:e.end>e.start&&i.planned<e.end&&i.end>e.start);t&&v(e.id,{type:"overlapsBooking",title:t.booking.title})}),e.events)){let i=y.get(a.id);i?.late&&"start"!==a.boundary&&a.id!==e.relocation&&v(a.id,{type:"late",minutes:Math.max(1,i.lateMinutes)})}let P=e.events.find(e=>"transport"===e.kind||"departure"===e.kind);for(let a of e.events)"checkout"===a.kind&&P&&a.start>P.start&&v(a.id,{type:"checkoutAfterDeparture",departure:P.start});let T=(0,s.summarizeLegs)(r),N=e.items.length>0||e.events.some(e=>e.blocking),I=(0,s.summarizeLegs)(e.legs.map(a=>e.covered.has(a.toId)?{spec:a,minutes:0,km:0}:{spec:a,...(0,s.estimateLeg)(a)})),R=N?(0,n.dayIntensity)(C.visitMinutes+I.minutes+(C.eventMinutes??0),I.byMode.car):null,K=b?y.get(b.id):void 0;return{legs:r,arriving:c,returnLeg:m,schedule:C,byItem:M,byEvent:y,warnings:B,totals:T,intensity:R,dayStart:(0,i.parseHHMM)(A),endEta:m?K?K.arrival:S+m.minutes:null,pending:r.some(e=>"pending"===e.status),estimated:r.some(e=>"estimate"===e.status&&("car"===e.spec.mode||"foot"===e.spec.mode||"bike"===e.spec.mode))}}function h(e){return{spec:e,...(0,s.estimateLeg)(e),status:"estimate"}}function E(e,i,r,n,s=(0,o.tripDefaultMode)(e,r,i)){return p(n,(0,a.dayBase)(e,i,n.date,r),(0,o.readPlanDays)(e)[n.date]??{},{events:(0,t.dayEventsFor)(i,n.date,r,n.items.map(e=>e.item),e.timeZone),defaultMode:s})}e.s(["OUTDOOR_CATEGORIES",0,u,"buildDayModel",0,p,"computeDay",0,g,"dayColor",0,l,"estimatedLeg",0,h,"itemLatLng",0,c,"planDay",0,function(e,a,i,t,r=h,n={}){let o=E(e,a,i,t,n.defaultMode);return{model:o,computed:g(o,r,n)}},"rebuildDayModel",0,function(e,a){return p({date:e.date,index:e.index,items:a},e.base,e.meta,{events:e.events.map(({boundary:e,...a})=>a),defaultMode:e.defaultMode})},"stopNames",0,function(e,a){let i=new Map;for(let t of(e.start&&i.set(e.start.id,e.base.start?.name??""),e.end&&i.set(e.end.id,e.base.end?.name??""),e.items))i.set(t.item.id,a(t));for(let a of e.events)i.set(a.id,("arrival"===a.kind?a.toName:a.fromName??a.placeName)??a.booking.title),i.set(`${a.id}:after`,a.toName??a.placeName??a.booking.title);return i},"tripDayModel",0,E])},49913,e=>{"use strict";let a={WAW:"Warschau (Chopin)",WMI:"Warschau-Modlin",KRK:"Krakau",GDN:"Danzig",WRO:"Breslau",POZ:"Posen",SZZ:"Stettin",LIS:"Lissabon",PDL:"Ponta Delgada (Azoren)",AGP:"Málaga",SVQ:"Sevilla",TFS:"Teneriffa Süd",TFN:"Teneriffa Nord",BIA:"Bastia (Korsika)",AJA:"Ajaccio (Korsika)",NCE:"Nizza",FCO:"Rom (Fiumicino)",CIA:"Rom (Ciampino)",MXP:"Mailand (Malpensa)",LIN:"Mailand (Linate)",VCE:"Venedig",NAP:"Neapel",FLR:"Florenz",MUC:"München",DUS:"Düsseldorf",CGN:"Köln/Bonn",NUE:"Nürnberg",HAJ:"Hannover",BRU:"Brüssel",CRL:"Brüssel (Charleroi)",LUX:"Luxemburg",ZRH:"Zürich",GVA:"Genf",VIE:"Wien",CPH:"Kopenhagen",GOT:"Göteborg",TOS:"Tromsø",KEF:"Reykjavík (Keflavík)",PRG:"Prag",KSC:"Košice",BEG:"Belgrad",OTP:"Bukarest",KIV:"Chișinău",ATH:"Athen",HER:"Heraklion (Kreta)",CHQ:"Chania (Kreta)",RHO:"Rhodos",CFU:"Korfu",SAW:"Istanbul (Sabiha Gökçen)",TBS:"Tiflis",EVN:"Eriwan",CAI:"Kairo",RAK:"Marrakesch",SSH:"Scharm El-Scheich",ZNZ:"Sansibar",CPT:"Kapstadt",MEX:"Mexiko-Stadt",CUN:"Cancún",HAV:"Havanna",BOG:"Bogotá",GRU:"São Paulo",SGN:"Ho-Chi-Minh-Stadt",SIN:"Singapur",PEK:"Peking",MLE:"Malé (Malediven)"},i=new Map(`
+WAW|Warszawa (Chopin)|Warsaw (Chopin)|Europe/Warsaw
+WMI|Warszawa-Modlin|Warsaw Modlin|Europe/Warsaw
+KRK|Krak\xf3w|Krakow|Europe/Warsaw
+GDN|Gdańsk|Gdansk|Europe/Warsaw
+KTW|Katowice||Europe/Warsaw
+WRO|Wrocław|Wroclaw|Europe/Warsaw
+POZ|Poznań|Poznan|Europe/Warsaw
+RZE|Rzesz\xf3w|Rzeszow|Europe/Warsaw
+SZZ|Szczecin||Europe/Warsaw
+LUZ|Lublin||Europe/Warsaw
+BZG|Bydgoszcz||Europe/Warsaw
+LCJ|Ł\xf3dź|Lodz|Europe/Warsaw
+SZY|Olsztyn-Mazury|Olsztyn-Mazury|Europe/Warsaw
+IEG|Zielona G\xf3ra|Zielona Gora|Europe/Warsaw
+RDO|Radom||Europe/Warsaw
+LIS|Lizbona|Lisbon|Europe/Lisbon
+OPO|Porto||Europe/Lisbon
+FAO|Faro||Europe/Lisbon
+FNC|Funchal (Madera)|Funchal (Madeira)|Atlantic/Madeira
+PDL|Ponta Delgada (Azory)|Ponta Delgada (Azores)|Atlantic/Azores
+MAD|Madryt|Madrid|Europe/Madrid
+BCN|Barcelona||Europe/Madrid
+AGP|Malaga||Europe/Madrid
+ALC|Alicante||Europe/Madrid
+VLC|Walencja|Valencia|Europe/Madrid
+SVQ|Sewilla|Seville|Europe/Madrid
+PMI|Palma de Mallorca||Europe/Madrid
+IBZ|Ibiza||Europe/Madrid
+MAH|Minorka|Menorca|Europe/Madrid
+BIO|Bilbao||Europe/Madrid
+GRO|Girona||Europe/Madrid
+REU|Reus||Europe/Madrid
+SCQ|Santiago de Compostela||Europe/Madrid
+TFS|Teneryfa Południe|Tenerife South|Atlantic/Canary
+TFN|Teneryfa P\xf3łnoc|Tenerife North|Atlantic/Canary
+LPA|Gran Canaria||Atlantic/Canary
+ACE|Lanzarote||Atlantic/Canary
+FUE|Fuerteventura||Atlantic/Canary
+SPC|La Palma||Atlantic/Canary
+CDG|Paryż (Charles de Gaulle)|Paris (Charles de Gaulle)|Europe/Paris
+ORY|Paryż (Orly)|Paris (Orly)|Europe/Paris
+BVA|Paryż (Beauvais)|Paris (Beauvais)|Europe/Paris
+NCE|Nicea|Nice|Europe/Paris
+MRS|Marsylia|Marseille|Europe/Paris
+LYS|Lyon||Europe/Paris
+TLS|Tuluza|Toulouse|Europe/Paris
+BOD|Bordeaux||Europe/Paris
+NTE|Nantes||Europe/Paris
+BSL|Bazylea-Miluza|Basel-Mulhouse|Europe/Paris
+MLH|Bazylea-Miluza|Basel-Mulhouse|Europe/Paris
+BIA|Bastia (Korsyka)|Bastia (Corsica)|Europe/Paris
+AJA|Ajaccio (Korsyka)|Ajaccio (Corsica)|Europe/Paris
+FCO|Rzym (Fiumicino)|Rome (Fiumicino)|Europe/Rome
+CIA|Rzym (Ciampino)|Rome (Ciampino)|Europe/Rome
+MXP|Mediolan (Malpensa)|Milan (Malpensa)|Europe/Rome
+LIN|Mediolan (Linate)|Milan (Linate)|Europe/Rome
+BGY|Bergamo||Europe/Rome
+VCE|Wenecja|Venice|Europe/Rome
+TSF|Treviso||Europe/Rome
+BLQ|Bolonia|Bologna|Europe/Rome
+NAP|Neapol|Naples|Europe/Rome
+PSA|Piza|Pisa|Europe/Rome
+FLR|Florencja|Florence|Europe/Rome
+CTA|Katania|Catania|Europe/Rome
+PMO|Palermo||Europe/Rome
+BRI|Bari||Europe/Rome
+BDS|Brindisi||Europe/Rome
+CAG|Cagliari||Europe/Rome
+OLB|Olbia||Europe/Rome
+TRN|Turyn|Turin|Europe/Rome
+VRN|Werona|Verona|Europe/Rome
+LHR|Londyn (Heathrow)|London (Heathrow)|Europe/London
+LGW|Londyn (Gatwick)|London (Gatwick)|Europe/London
+STN|Londyn (Stansted)|London (Stansted)|Europe/London
+LTN|Londyn (Luton)|London (Luton)|Europe/London
+LCY|Londyn (City)|London (City)|Europe/London
+SEN|Londyn (Southend)|London (Southend)|Europe/London
+MAN|Manchester||Europe/London
+EDI|Edynburg|Edinburgh|Europe/London
+GLA|Glasgow||Europe/London
+BHX|Birmingham||Europe/London
+BRS|Bristol||Europe/London
+LPL|Liverpool||Europe/London
+EMA|East Midlands||Europe/London
+LBA|Leeds Bradford||Europe/London
+NCL|Newcastle||Europe/London
+ABZ|Aberdeen||Europe/London
+BFS|Belfast||Europe/London
+DUB|Dublin||Europe/Dublin
+ORK|Cork||Europe/Dublin
+SNN|Shannon||Europe/Dublin
+FRA|Frankfurt||Europe/Berlin
+HHN|Frankfurt-Hahn||Europe/Berlin
+MUC|Monachium|Munich|Europe/Berlin
+BER|Berlin||Europe/Berlin
+HAM|Hamburg||Europe/Berlin
+DUS|D\xfcsseldorf|Dusseldorf|Europe/Berlin
+CGN|Kolonia/Bonn|Cologne/Bonn|Europe/Berlin
+STR|Stuttgart||Europe/Berlin
+NUE|Norymberga|Nuremberg|Europe/Berlin
+DTM|Dortmund||Europe/Berlin
+HAJ|Hanower|Hanover|Europe/Berlin
+LEJ|Lipsk|Leipzig|Europe/Berlin
+DRS|Drezno|Dresden|Europe/Berlin
+BRE|Brema|Bremen|Europe/Berlin
+FMM|Memmingen||Europe/Berlin
+NRN|Weeze||Europe/Berlin
+AMS|Amsterdam||Europe/Amsterdam
+EIN|Eindhoven||Europe/Amsterdam
+RTM|Rotterdam||Europe/Amsterdam
+BRU|Bruksela|Brussels|Europe/Brussels
+CRL|Bruksela (Charleroi)|Brussels (Charleroi)|Europe/Brussels
+LUX|Luksemburg|Luxembourg|Europe/Luxembourg
+ZRH|Zurych|Zurich|Europe/Zurich
+GVA|Genewa|Geneva|Europe/Zurich
+VIE|Wiedeń|Vienna|Europe/Vienna
+SZG|Salzburg||Europe/Vienna
+INN|Innsbruck||Europe/Vienna
+CPH|Kopenhaga|Copenhagen|Europe/Copenhagen
+BLL|Billund||Europe/Copenhagen
+ARN|Sztokholm (Arlanda)|Stockholm (Arlanda)|Europe/Stockholm
+NYO|Sztokholm (Skavsta)|Stockholm (Skavsta)|Europe/Stockholm
+GOT|G\xf6teborg|Gothenburg|Europe/Stockholm
+OSL|Oslo||Europe/Oslo
+TRF|Oslo (Torp)|Oslo (Torp)|Europe/Oslo
+BGO|Bergen||Europe/Oslo
+TRD|Trondheim||Europe/Oslo
+TOS|Troms\xf8|Tromso|Europe/Oslo
+HEL|Helsinki||Europe/Helsinki
+RVN|Rovaniemi||Europe/Helsinki
+KEF|Reykjav\xedk (Keflav\xedk)|Reykjavik (Keflavik)|Atlantic/Reykjavik
+RIX|Ryga|Riga|Europe/Riga
+VNO|Wilno|Vilnius|Europe/Vilnius
+KUN|Kowno|Kaunas|Europe/Vilnius
+TLL|Tallin|Tallinn|Europe/Tallinn
+PRG|Praga|Prague|Europe/Prague
+BUD|Budapeszt|Budapest|Europe/Budapest
+BTS|Bratysława|Bratislava|Europe/Bratislava
+KSC|Koszyce|Kosice|Europe/Bratislava
+LJU|Lublana|Ljubljana|Europe/Ljubljana
+ZAG|Zagrzeb|Zagreb|Europe/Zagreb
+SPU|Split||Europe/Zagreb
+DBV|Dubrownik|Dubrovnik|Europe/Zagreb
+ZAD|Zadar||Europe/Zagreb
+PUY|Pula||Europe/Zagreb
+BEG|Belgrad|Belgrade|Europe/Belgrade
+OTP|Bukareszt|Bucharest|Europe/Bucharest
+CLJ|Kluż-Napoka|Cluj-Napoca|Europe/Bucharest
+SOF|Sofia||Europe/Sofia
+VAR|Warna|Varna|Europe/Sofia
+BOJ|Burgas||Europe/Sofia
+TIA|Tirana||Europe/Tirane
+SKP|Skopje||Europe/Skopje
+TGD|Podgorica||Europe/Podgorica
+TIV|Tivat||Europe/Podgorica
+SJJ|Sarajewo|Sarajevo|Europe/Sarajevo
+KIV|Kiszyni\xf3w|Chisinau|Europe/Chisinau
+ATH|Ateny|Athens|Europe/Athens
+SKG|Saloniki|Thessaloniki|Europe/Athens
+HER|Heraklion (Kreta)|Heraklion (Crete)|Europe/Athens
+CHQ|Chania (Kreta)|Chania (Crete)|Europe/Athens
+RHO|Rodos|Rhodes|Europe/Athens
+CFU|Korfu|Corfu|Europe/Athens
+JTR|Santorini||Europe/Athens
+JMK|Mykonos||Europe/Athens
+KGS|Kos||Europe/Athens
+ZTH|Zakynthos||Europe/Athens
+LCA|Larnaka|Larnaca|Asia/Nicosia
+PFO|Pafos|Paphos|Asia/Nicosia
+MLA|Malta||Europe/Malta
+IST|Stambuł|Istanbul|Europe/Istanbul
+SAW|Stambuł (Sabiha G\xf6k\xe7en)|Istanbul (Sabiha Gokcen)|Europe/Istanbul
+AYT|Antalya||Europe/Istanbul
+DLM|Dalaman||Europe/Istanbul
+BJV|Bodrum||Europe/Istanbul
+ADB|Izmir||Europe/Istanbul
+TBS|Tbilisi||Asia/Tbilisi
+KUT|Kutaisi||Asia/Tbilisi
+EVN|Erywań|Yerevan|Asia/Yerevan
+GYD|Baku||Asia/Baku
+TLV|Tel Awiw|Tel Aviv|Asia/Jerusalem
+AMM|Amman||Asia/Amman
+DXB|Dubaj|Dubai|Asia/Dubai
+AUH|Abu Zabi|Abu Dhabi|Asia/Dubai
+DOH|Doha||Asia/Qatar
+CAI|Kair|Cairo|Africa/Cairo
+HRG|Hurghada||Africa/Cairo
+SSH|Szarm el-Szejk|Sharm el-Sheikh|Africa/Cairo
+RAK|Marrakesz|Marrakesh|Africa/Casablanca
+CMN|Casablanca||Africa/Casablanca
+AGA|Agadir||Africa/Casablanca
+TUN|Tunis||Africa/Tunis
+DJE|Dżerba|Djerba|Africa/Tunis
+NBO|Nairobi||Africa/Nairobi
+ZNZ|Zanzibar||Africa/Dar_es_Salaam
+JNB|Johannesburg||Africa/Johannesburg
+CPT|Kapsztad|Cape Town|Africa/Johannesburg
+JFK|Nowy Jork (JFK)|New York (JFK)|America/New_York
+EWR|Nowy Jork (Newark)|New York (Newark)|America/New_York
+LGA|Nowy Jork (LaGuardia)|New York (LaGuardia)|America/New_York
+BOS|Boston||America/New_York
+IAD|Waszyngton (Dulles)|Washington (Dulles)|America/New_York
+ATL|Atlanta||America/New_York
+MIA|Miami||America/New_York
+MCO|Orlando||America/New_York
+ORD|Chicago (O'Hare)||America/Chicago
+DEN|Denver||America/Denver
+LAX|Los Angeles||America/Los_Angeles
+SFO|San Francisco||America/Los_Angeles
+SEA|Seattle||America/Los_Angeles
+LAS|Las Vegas||America/Los_Angeles
+YYZ|Toronto||America/Toronto
+YUL|Montreal||America/Toronto
+YVR|Vancouver||America/Vancouver
+MEX|Meksyk|Mexico City|America/Mexico_City
+CUN|Canc\xfan|Cancun|America/Cancun
+HAV|Hawana|Havana|America/Havana
+PUJ|Punta Cana||America/Santo_Domingo
+BOG|Bogota||America/Bogota
+LIM|Lima||America/Lima
+GRU|S\xe3o Paulo|Sao Paulo|America/Sao_Paulo
+GIG|Rio de Janeiro||America/Sao_Paulo
+EZE|Buenos Aires||America/Argentina/Buenos_Aires
+BKK|Bangkok||Asia/Bangkok
+HKT|Phuket||Asia/Bangkok
+SGN|Ho Chi Minh||Asia/Ho_Chi_Minh
+HAN|Hanoi||Asia/Ho_Chi_Minh
+SIN|Singapur|Singapore|Asia/Singapore
+KUL|Kuala Lumpur||Asia/Kuala_Lumpur
+CGK|Dżakarta|Jakarta|Asia/Jakarta
+DPS|Bali (Denpasar)||Asia/Makassar
+MNL|Manila||Asia/Manila
+HKG|Hongkong|Hong Kong|Asia/Hong_Kong
+TPE|Tajpej|Taipei|Asia/Taipei
+PEK|Pekin|Beijing|Asia/Shanghai
+PVG|Szanghaj|Shanghai|Asia/Shanghai
+ICN|Seul|Seoul|Asia/Seoul
+HND|Tokio (Haneda)|Tokyo (Haneda)|Asia/Tokyo
+NRT|Tokio (Narita)|Tokyo (Narita)|Asia/Tokyo
+KIX|Osaka (Kansai)||Asia/Tokyo
+DEL|Delhi||Asia/Kolkata
+BOM|Bombaj|Mumbai|Asia/Kolkata
+CMB|Kolombo|Colombo|Asia/Colombo
+MLE|Male (Malediwy)|Male (Maldives)|Indian/Maldives
+SYD|Sydney||Australia/Sydney
+MEL|Melbourne||Australia/Melbourne
+AKL|Auckland||Pacific/Auckland
+`.trim().split("\n").map(e=>{let[i="",t="",r="",n=""]=e.split("|");return[i,{code:i,city:{pl:t,en:r||t,de:a[i]??(r||t)},timeZone:n}]}));function t(e){return e?i.get(e.toUpperCase()):void 0}e.s(["AIRLINES",0,{FR:"Ryanair",RK:"Ryanair UK",W6:"Wizz Air",W4:"Wizz Air Malta",W9:"Wizz Air UK",LO:"LOT Polish Airlines",U2:"easyJet",EC:"easyJet Europe",DS:"easyJet Switzerland",LH:"Lufthansa",EW:"Eurowings",VY:"Vueling",KL:"KLM",AF:"Air France",BA:"British Airways",IB:"Iberia",TP:"TAP Air Portugal",LX:"SWISS",OS:"Austrian Airlines",SN:"Brussels Airlines",SK:"SAS",DY:"Norwegian",D8:"Norwegian",AY:"Finnair",A3:"Aegean Airlines",TK:"Turkish Airlines",PC:"Pegasus",EK:"Emirates",QR:"Qatar Airways",EY:"Etihad",LS:"Jet2",BY:"TUI Airways",X3:"TUIfly",HV:"Transavia",TO:"Transavia France",V7:"Volotea",AZ:"ITA Airways",UX:"Air Europa",NT:"Binter Canarias",BT:"airBaltic",OK:"Czech Airlines",QS:"Smartwings",RO:"TAROM",FB:"Bulgaria Air",JU:"Air Serbia",OU:"Croatia Airlines",E4:"Enter Air",XQ:"SunExpress",LG:"Luxair",EI:"Aer Lingus",FI:"Icelandair",DL:"Delta",UA:"United",AA:"American Airlines",AC:"Air Canada"},"airportByCity",0,function(e){let a=e.trim().toLowerCase();if(a)for(let e of i.values())for(let i of Object.values(e.city)){let t=i.toLowerCase();if(t===a||t.startsWith(`${a} (`))return e}},"airportByCode",0,t,"airportLabel",0,function(e,a,i){let r=t(e),n=(r?.city[a]??i)?.replace(/\s*\([^)]*\)\s*$/,"");return n?`${n} (${e.toUpperCase()})`:e.toUpperCase()}])},38520,e=>{"use strict";var a=e.i(12268),i=e.i(41478),t=e.i(93440),r=e.i(99506),n=e.i(58162),o=e.i(49913),s=e.i(25395);let l=["Public","Bank","School","Authorities","Optional","Observance"],u=120,c=(e,a=u)=>"string"==typeof e&&e.trim()?e.trim().slice(0,a):void 0;function d(e,a,i){let t=a.toUpperCase(),r=new Set(e.flatMap(e=>e.counties??[])),n=e=>r.size>=4&&[...r].every(a=>e.includes(a)),o=new Map;for(let a of e){let e=a.types.includes("Public")||a.types.includes("Bank"),r=a.types.includes("Optional");if(!e&&!r)continue;let s=a.global||!a.counties?.length||n(a.counties);if(!s&&i&&!a.counties?.includes(i))continue;let l=!s,u=!!e&&(!l||!!i)||"maybe",c=e?l?"regional":"national":"optional",d={date:a.date,countryCode:t,localName:a.localName,name:a.name,scope:c,status:u,...l&&a.counties?{counties:a.counties}:{}},A=o.get(a.date)??[],p=A.findIndex(e=>e.name===d.name||e.localName===d.localName);p<0?A.push(d):m(d)>m(A[p])&&(A[p]=d),o.set(a.date,A)}for(let e of o.values())e.sort((e,a)=>m(a)-m(e));return{countryCode:t,byDate:o}}let m=e=>2*(!0===e.status)+ +("national"===e.scope),A=e=>!!e&&Number.isFinite(e.lat)&&Number.isFinite(e.lng);function p(e,a){let i,t=50,r=new Set;for(let o of a){let a=(0,s.haversineKm)(e,o);a<=t&&(i=o,t=a),(a<=300||o.bbox&&0===(0,n.kmOutsideBBox)(o.bbox,e))&&r.add(o.countryCode)}return i?i.countryCode:1===r.size?[...r][0]:void 0}let f=/\(([A-Z]{3})\)\s*$|^([A-Z]{3})$/;function g(e,a){let r=e?.name.trim()??"",n=(0,i.countryCodeFromAddress)(r);if(n)return n;let s=f.exec(r),l=(0,o.airportByCode)(s?.[1]??s?.[2]);return(0,t.countryOfTimeZone)(l?.timeZone)??(0,t.countryOfTimeZone)(a)}function h(e,a){if(e.index!==e.count-1)return!1;let i=!!a&&(0,r.datePart)(e.start)>=a&&e.to!==e.home;return e.index>0&&e.to===e.origin&&e.origin!==e.home||i}let E=(e,a)=>e.start<a.start?-1:+(e.start>a.start);function k(e,a){let t=(0,i.countryCodeFromAddress)(a?.address);if(t)return t;let r=1===e.countries.length?e.countries[0]:void 0;return A(a)&&0!==e.anchors.length?e.countryNear(a):r}e.s(["COUNTRY_ANCHOR_KM",0,50,"buildHolidayCalendar",0,function(e){let a=new Map,i=new Set;for(let[t,r]of e.data)if(null===r)i.add(t);else{let i=e.region&&e.region.startsWith(`${t}-`)?e.region:void 0;a.set(t,d(r,t,i))}let t=e.stays??[],n=e.visits??[],o=e=>t.find(a=>a.from<=e&&e<a.to)?.countryCode??n.find(a=>a.from<e&&e<a.to)?.countryCode??t.find(a=>a.to===e)?.countryCode??n.find(a=>a.from===e)?.countryCode??n.find(a=>a.to===e)?.countryCode,s=e.anchors??[],l=(i,t)=>{let r;return(t?[t]:(r=o(i))?[r]:e.countries).flatMap(e=>a.get(e)?.byDate.get(i)??[])};return{countries:e.countries,supported:new Set(a.keys()),unsupported:i,anchors:s,countryOn:o,countryNear:e=>p(e,s),status:(e,i)=>{var t;let r=a.get(e);return r?(t=r.byDate.get(i),!!t?.length&&(!!t.some(e=>!0===e.status)||"maybe")):null},on:l,inRange(e,a){let i=[],t=Math.min((0,r.diffDays)(e,a),400);for(let a=0;a<=t;a++)i.push(...l((0,r.addDays)(e,a)));return i}}},"countryAt",0,p,"interpretHolidays",0,d,"isReturnLeg",0,h,"parseNagerHolidays",0,function(e,a){if(!Array.isArray(e))return[];let i=a.toUpperCase(),t=[];for(let a of e.slice(0,400)){if(!a||"object"!=typeof a)continue;let e=a.date,n=c(a.name),o=c(a.localName)??n;if(!(0,r.isValidISODate)(e)||!n||!o||"string"==typeof a.countryCode&&a.countryCode.toUpperCase()!==i)continue;let s=(Array.isArray(a.types)?a.types:["Public"]).filter(e=>l.includes(e)),u=Array.isArray(a.counties)?a.counties.filter(e=>"string"==typeof e&&/^[A-Z]{2}-[A-Z0-9]{1,3}$/.test(e)).slice(0,100):[];t.push({date:e,localName:o,name:n,countryCode:i,global:!1!==a.global||0===u.length,...u.length&&!1===a.global?{counties:u}:{},types:s.length?s:["Public"]})}return t.sort((e,a)=>e.date<a.date?-1:+(e.date>a.date))},"placeCountry",0,k,"placeHolidayCheck",0,function(e,a){if(!e||0===e.supported.size)return;let i=k(e,a);return i?a=>e.status(i,a):a=>{let i=e.countries.map(i=>e.status(i,a));return i.some(e=>!0===e||"maybe"===e)?"maybe":!i.includes(!1)&&null}},"tripCountries",0,function(e,t=[],n=[]){var o;let s=[],l=(e,a)=>{a&&A(e)&&s.push({lat:e.lat,lng:e.lng,countryCode:a})},u=(o=e.destination,(0,i.isCountryCode)(o.countryCode)?o.countryCode:(0,i.countryCodeFromName)(o.country));if(u&&A(e.destination)){let a=e.destination.bbox,i=!!a&&4===a.length&&a.every(Number.isFinite)&&a[0]<a[2]&&a[1]<a[3];s.push({lat:e.destination.lat,lng:e.destination.lng,countryCode:u,...i?{bbox:a}:{}})}let c=[],d=(e,a)=>c.push({date:e,code:a}),m=[],f=t.filter(a.isTransport).sort(E),k=f.map(e=>({from:g(e.from,e.startTimeZone),to:g(e.to,e.endTimeZone)})),M=k[0]?.from,y=e=>{let a=f[e],i=f[e+1];if(!a?.end||!i)return!1;let t=(0,r.diffLocalMinutes)(a.end,i.start);return t>=0&&t<720};f.forEach((a,i)=>{let{from:t,to:n}=k[i];i>0&&t&&t!==M&&!y(i-1)&&t!==k[i-1].to&&(d(a.start,t),l(a.from,t));let o=h({index:i,count:f.length,start:a.start,to:n,origin:M,home:u},e.endDate);if(!n||o||y(i))return;l(a.to,n),d(a.end??a.start,n);let s=(0,r.datePart)(a.end??a.start),c=f[i+1]?(0,r.datePart)(f[i+1].start):void 0,A=c&&(0,r.isValidISODate)(c)&&c>s?c:(0,r.addDays)(s,1);(0,r.isValidISODate)(s)&&m.push({from:s,to:A,countryCode:n})});let b=new Map(n.map(e=>[e.id,e])),S=[];for(let e of t.filter(a.isStay).sort(E)){let a=e.placeId?b.get(e.placeId):void 0,t=A(a)?a:A(e.location)?e.location:void 0,n=(0,r.datePart)(e.start),o=(0,i.countryCodeFromAddress)(a?.address)??(0,i.countryCodeFromAddress)(e.location?.name)??(t?p(t,s):m.find(e=>e.from===n)?.countryCode);if(!o)continue;d(e.start,o),l(t,o);let u=e.end?(0,r.datePart)(e.end):(0,r.addDays)(n,1);(0,r.isValidISODate)(n)&&(0,r.isValidISODate)(u)&&(0,r.diffDays)(n,u)>0&&S.push({from:n,to:u,countryCode:o})}let C=[];for(let e of[u,...c.sort((e,a)=>e.date<a.date?-1:+(e.date>a.date)).map(e=>e.code)])e&&!C.includes(e)&&C.length<8&&C.push(e);return{countries:C,stays:S,visits:m,anchors:s}},"tripYears",0,function(e){let a=(0,r.parseISODate)(e.startDate).year,i=(0,r.parseISODate)(e.endDate).year,t=[];for(let e=a;e<=i&&t.length<3;e++)t.push(e);return t}])},90170,e=>{"use strict";var a=e.i(25395);function i(e){return"car"===e||"foot"===e||"bike"===e?e:null}let t=e=>(Math.round(1e5*e)/1e5+0).toFixed(5),r=(e,a)=>(e[0]-a.lng)**2+(e[1]-a.lat)**2;e.s(["dominantMode",0,function(e,a="car"){let i=new Map,t=null,r=0;for(let a of e){if("none"===a)continue;let e=(i.get(a)??0)+1;i.set(a,e),e>r&&(t=a,r=e)}return t??a},"estimateLeg",0,function(e){let i=(0,a.haversineKm)(e.from,e.to),t="none"===e.mode?1:a.FALLBACK_SPEEDS[e.mode].detour;return{minutes:(0,a.estimateTravelMinutes)(e.from,e.to,e.mode),km:Math.round(i*t*10)/10}},"groupRuns",0,function(e,a=25){let t=[],r=null;for(let n of e){let e=i(n.mode);if(!e){r=null;continue}let o=r?.legs[r.legs.length-1];r&&o&&r.mode===e&&o.toId===n.fromId&&r.points.length<a?(r.legs.push(n),r.points.push(n.to)):(r={mode:e,legs:[n],points:[n.from,n.to]},t.push(r))}return t},"legKey",0,function(e,a,i){return`${i}|${t(e.lat)},${t(e.lng)}|${t(a.lat)},${t(a.lng)}`},"routedMode",0,i,"splitGeometry",0,function(e,a){let i=a.length-1;if(i<=0)return[];let t=e=>[e.lng,e.lat];if(e.length<2)return Array.from({length:i},(e,i)=>[t(a[i]),t(a[i+1])]);let n=[0],o=0;for(let t=1;t<i;t++){let i=a[t],s=o,l=1/0;for(let a=o;a<e.length;a++){let t=r(e[a],i);t<l&&(l=t,s=a)}n.push(s),o=s}n.push(e.length-1);let s=[];for(let r=0;r<i;r++){let i=n[r],o=n[r+1],l=e.slice(i,o+1);s.push(l.length>=2?l:[t(a[r]),t(a[r+1])])}return s},"summarizeLegs",0,function(e){let a={car:0,foot:0,bike:0,transit:0,none:0},i=0,t=0;for(let r of e)a[r.spec.mode]+=r.minutes,i+=r.minutes,t+=r.km;return{byMode:a,minutes:i,km:Math.round(10*t)/10}}])}]);
